@@ -1,59 +1,38 @@
 import React from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import {Container, Row } from "react-bootstrap";
 import './App.css';
+import Board from "./components/Board";
+import Feedback from "./components/Feedback";
+import Header from "./components/Header";
+import Info from "./components/Info";
 
-function App() {
-  return (
-    <Container >
-      <Row className="justify-content-center mt-4">
-        <h1>Tic Tac Toe</h1>
-      </Row>
-      <Row className="mt-4">
-        <Col md={4}>
-          <Form>
-              <h3>Player Information</h3>  
-              <Form.Group className="mb-3">
-                <Form.Label>Player 1 Name:</Form.Label>
-                <Form.Control type="text" placeholder="Enter Player1 Name"/>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Player 2 Name:</Form.Label>
-                <Form.Control type="text" placeholder="Enter Player2 Name"/>
-              </Form.Group>
-              
-              <Button variant="primary" type="submit">
-                Start The Game
-            </Button>
-          </Form>          
-        </Col>
-        <Col md={{span:4, offset:4}}>
-          <Row className="justify-content-center mt-4">
-            <h5>Jonas's Turn</h5>
-            <Col md={12} className="p-4 App_board">
-              <Row className="App_board_row">
-                <Col></Col>
-                <Col></Col>
-                <Col></Col>
-              </Row>
-              <Row className="App_board_row">
-                <Col></Col>
-                <Col></Col>
-                <Col></Col> 
-              </Row>
-              <Row className="App_board_row">
-                <Col></Col>
-                <Col></Col>
-                <Col></Col>
-              </Row>
-            </Col>
+class  App extends React.Component {
+
+    state ={
+      isGameOn:false
+    }
+
+    updateState = (flag)=>{
+      this.setState({
+        isGameOn : flag
+      })
+    }
+
+    render()
+    {
+      return (
+        <Container >
+          <Header ></Header>
+          <Row className="mt-4">
+            <Info updateState={this.updateState} isGameOn = {this.state.isGameOn}></Info>
+            <Board isGameOn = {this.state.isGameOn}></Board>            
           </Row>
-        </Col>
-      </Row>
-      <Row className="justify-content-center mt-4">
-          <h4>Winner is John</h4>
-      </Row>
-    </Container>
-  );
+          <Row className=" mt-4">
+            <Feedback></Feedback>
+          </Row>
+        </Container>
+      );
+    }
 }
 
 export default App;
