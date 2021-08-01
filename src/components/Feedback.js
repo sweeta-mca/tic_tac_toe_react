@@ -1,14 +1,19 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
 
+function Feedback({isDraw,isGameOn,winner}) {    
+  if (winner) {
+    return <h4>The winner is {winner}</h4>;
+  }
 
+  if (isDraw) {
+    return <h4>Match is draw</h4>;
+  }
+  
+  if (isGameOn) {
+    return <h4>Game is on</h4>;
+  }
 
-function Feedback() {
-    return (
-        <Row className="justify-content-center mt-4">
-          <h4>Winner is John</h4>
-      </Row>
-    );
+  return (<h4>Play Tic Tac Toe</h4>);
 }
 
 export default Feedback;

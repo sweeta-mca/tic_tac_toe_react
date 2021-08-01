@@ -7,32 +7,74 @@ import Header from "./components/Header";
 import Info from "./components/Info";
 
 class  App extends React.Component {
-
     state ={
-      isGameOn:false
+      isGameOn:false,
+      isDraw : false,
+      winner:null,
+      player1:null,
+      player2:null,
+      turn : null     
     }
 
-    updateState = (flag)=>{
+    handleChange = () => {
+      var {turn} = this.state
       this.setState({
-        isGameOn : flag
+        turn: turn ===1?2:1
       })
     }
 
+    updateState = (flag,isDraw,winner,playerInfo) => {
+      if(flag) {
+        // player starting the game
+        var randomValue = Math.floor(Math.random() * 2)+1;
+        
+        this.setState({
+          isGameOn : flag,    
+          ...playerInfo,
+          turn : randomValue
+        })
+      }
+      else{
+        var won;
+        if(winner)
+        {
+          won = this.state.turn === 1 ? this.state.player1 : this.state.player2
+        }
+        else
+        {
+          won = this.state.winner
+        }
+        this.setState({
+          isGameOn : flag,    
+          isDraw : isDraw?isDraw : this.state.isDraw,
+          winner: won      
+        }) 
+      }
+      
+    }
+    
     render()
     {
+      var {isDraw,isGameOn,winner,turn,player1,player2} = this.state;
+      var chance;
+      if(turn === 1)
+      {
+        chance = player1
+      }else{
+        chance =player2
+      }
       return (
-        <Container >
-          <Header ></Header>
+        <Container>
+          <Header></Header>
           <Row className="mt-4">
-            <Info updateState={this.updateState} isGameOn = {this.state.isGameOn}></Info>
-            <Board isGameOn = {this.state.isGameOn}></Board>            
+            <Info  updateState ={this.updateState} isGameOn = {isGameOn} winner={winner} isDraw={isDraw}></Info>
+            <Board change ={this.handleChange} isGameOn = {isGameOn} updateState={this.updateState} player ={chance}></Board>            
           </Row>
-          <Row className=" mt-4">
-            <Feedback></Feedback>
+          <Row className="justify-content-center mt-4">
+            <Feedback isDraw={isDraw} isGameOn={isGameOn} winner={winner}></Feedback>
           </Row>
         </Container>
       );
     }
-}
-
+  }
 export default App;
